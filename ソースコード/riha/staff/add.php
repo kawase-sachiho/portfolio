@@ -136,7 +136,7 @@ catch (Exception $e)
                                 </label>
                             </th>
                             <td class="col-4">
-                                <input name="text mail" class="form-control input-md" type="text" value="<?= isset($mail) ? $mail :'' ?>">
+                                <input name="mail" class="form-control input-md" type="text" value="<?= isset($mail) ? $mail :'' ?>">
                             </td>
                         </tr>
                         <tr>

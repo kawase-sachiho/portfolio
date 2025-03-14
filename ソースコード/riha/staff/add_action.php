@@ -7,7 +7,6 @@ require_once('../class/db/Safety.php');
 require_once('../class/Staffs.php');
 require_once('../class/Common.php');
 
-
 if (!Safety::isValidToken($_POST['token'])) {
     $_SESSION['err']['msg'] = "不正な処理が行われました";
     header('Location:../error.php');
