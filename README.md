@@ -10,9 +10,9 @@
 
 ![患者一覧画面](images/patient.png)
 
-![患者追加画面・基本情報入力](images/patint_add1.png)
+![患者追加画面・基本情報入力](images/patient_add1.png)
 
-![患者追加画面・担当者選択](images/patint_add2.png)
+![患者追加画面・担当者選択](images/patient_add2.png)
 
 ![出勤者一覧画面](images/working.png)
 
