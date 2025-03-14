@@ -4,6 +4,32 @@
 
 ![トップ画面](images/top.png)
 
+![スタッフ一覧画面画面](images/staff.png)
+
+![スタッフ編集画面](images/staff_edit.png)
+
+![患者一覧画面](images/patient.png)
+
+![患者追加画面・基本情報入力](images/patint_add1.png)
+
+![患者追加画面・担当者選択](images/patint_add2.png)
+
+![出勤者一覧画面](images/working.png)
+
+![単位一覧画面](images/unit.png)
+
+![単位調整画面](images/unit_change.png)
+
+![単位調整一覧画面](images/unit_finished.png)
+
+![担当者調整・一覧画面](images/staff_patient.png)
+
+![担当者調整・スタッフ選択画面](images/patient_staff_select.png)
+
+![介入表(当日)画面](images/today_table.png)
+
+![介入表(当日)画面](images/base_table.png)
+
 ## 概要
 
   - 入院中にリハビリテーションが必要とされる患者に対し、日ごとに担当リハビリスタッフ、単位数(治療時間)を調整する。
