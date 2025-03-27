@@ -3,7 +3,6 @@
 class SelectStaff
 {
     private $pdo;
-
     const NOT_DELETE = 0;
     const DELETE = 1;
 
@@ -11,13 +10,12 @@ class SelectStaff
     {
         $this->pdo = $pdo;
     }
-
-    /* 出勤者がいるか確認するメソッド
-    person/select_patient 
-    @param  $reservation_date date
-            $job int
-    @return $result 出勤しているスタッフの人数を入れた配列
-    @var    array */
+    /**
+     * 出勤者がいるか確認するメソッド
+     * @param string $reservation_date
+     * @param int $job
+     * @return array 出勤しているスタッフの人数を入れた配列
+     */
     public function countStaffByRihaDate(
         $reservation_date,
         $job
@@ -37,14 +35,13 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* リハビリ‐患者テーブルのスタッフの合計単位を計算
-    person/select_staff 
-    @param  $today_staff_id int
-            $reservation_date date
-            $job int
-    @return $result 指定したスタッフが割り当てられている単位の合計値を入れた連想配列
-    @var    array */
+    /**
+     * リハビリ‐患者テーブルのスタッフの合計単位を計算 
+     * @param int $today_staff_id
+     * @param string $reservation_date
+     * @param int $job
+     * @return array 指定したスタッフが割り当てられている単位の合計値を入れた連想配列
+     */
     public function sumNumberByStaff(
         $today_staff_id,
         $reservation_date,
@@ -67,14 +64,13 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* スタッフが当日担当する患者の人数を計算
-    person/select_staff 
-    @param  $today_staff_id int
-            $reservation_date date
-            $job int
-    @return $result 指定したスタッフが割り当てられている人数(データの数)の合計値を入れた連想配列
-    @var    array */
+    /**
+     * スタッフが当日担当する患者の人数を計算
+     * @param int $today_staff_id
+     * @param string $reservation_date
+     * @param int $job
+     * @return array 指定したスタッフが割り当てられている人数(データの数)の合計値を入れた連想配列
+     */
     public function countPatientByStaff(
         $today_staff_id,
         $reservation_date,
@@ -97,12 +93,11 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*患者とその担当スタッフの情報を獲得するメソッド 
-    person/select_staff 
-    @param  $patient_id int
-    @return $result 患者とその担当スタッフの情報を入れた連想配列
-    @var    array　*/
+    /**
+     * 患者とその担当スタッフの情報を獲得するメソッド 
+     * @param int $patient_id
+     * @return array 患者とその担当スタッフの情報を入れた連想配列
+     */
     public function getPatientAndStaff($patient_id)
     {
         $sql = '';
@@ -121,12 +116,12 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*担当リハビリスタッフを獲得するメソッド
-    person/select_staff 
-    @param  $base_id int
-    @return $result  担当スタッフの名前とidが入った連想配列
-    @var    array */
+    /**
+     * 担当リハビリスタッフを獲得するメソッド  
+     * @param int $base_id
+     * @param int $job
+     * @return array 担当スタッフの名前とidが入った連想配列
+     */
     public function getBaseStaffInfo(
         $base_id,
         $job
@@ -163,13 +158,13 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*　リハビリ‐患者テーブルに単位調整済のデータが存在するか確認するメソッド
-    person/select_action 
-    @param　$patient_id int
-            $reservation_date date
-            $job int 
-    @return $result id・予約日・職種が一致するリハビリ予約のデータのidを入れた連想配列
-    @var    array */
+    /**
+     * リハビリ‐患者テーブルに単位調整済のデータが存在するか確認するメソッド 
+     * @param int $patient_id
+     * @param string $reservation_date
+     * @param int $job
+     * @return array id・予約日・職種が一致するリハビリ予約のデータのidを入れた連想配列
+     */
     public function searchUnitUpdated(
         $patient_id,
         $reservation_date,
@@ -192,14 +187,14 @@ class SelectStaff
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /* 担当者の調整を行うメソッド 
-    person/select_action 
-    @param  $patient_id int
-            $today_staff_id int
-            $today_staff_num int
-            $reservation_date date
-    @return $result 担当者を調整した結果(既にレコードが存在した場合)
-    @var    bool */
+    /**
+     * 担当者の調整を行うメソッド  
+     * @param int $patient_id
+     * @param int $today_staff_id
+     * @param int $today_staff_num
+     * @param string $reservation_date
+     * @return bool 担当者を調整した結果(既にレコードが存在した場合)
+     */
     public function selectTodayStaff(
         $patient_id,
         $today_staff_id,
@@ -225,15 +220,14 @@ class SelectStaff
         $result = $stmt->execute();
         return $result;
     }
-
-    /* 担当者の調整と同時に単位数を決定してデータを挿入するメソッド
-    person/select_action 
-    @param  $patient_id int
-            $today_staff_id int
-            $today_staff_num int
-            $reservation_date date
-    @return $result 担当者を調整した結果(レコードが存在しない場合)
-    @var    bool */
+    /**
+     * 担当者の調整と同時に単位数を決定してデータを挿入するメソッド
+     * @param int $patient_id
+     * @param string $reservation_date
+     * @param int $today_staff_id
+     * @param int $today_staff_num
+     * @return bool 担当者を調整した結果(レコードが存在しない場合)
+     */
     public function selectStaffAndNumber(
         $patient_id,
         $reservation_date,
@@ -264,14 +258,13 @@ class SelectStaff
         $result = $stmt->execute();
         return $result;
     }
-
-    /*リハビリ予約の削除＝リハビリ担当者をリセットするメソッド
-    person/delete_action 
-    @param  $patient_id int
-            $job int
-            $reservation_date date
-    @return $result 担当者をリセット(リハビリ予約を削除)した結果
-    @var    bool */
+    /**
+     * リハビリ予約の削除＝リハビリ担当者をリセットするメソッド 
+     * @param int $patient_id
+     * @param int $job
+     * @param string $reservation_date
+     * @return bool 担当者をリセット(リハビリ予約を削除)した結果
+     */
     public function deleteReservation(
         $patient_id,
         $job,
@@ -296,12 +289,12 @@ class SelectStaff
         $result = $stmt->execute();
         return $result;
     }
-    /* 患者が割り当てられているスタッフの氏名を獲得するメソッド 
-    person/select_complete 
-    @param  $job int
-            $reservation_date date
-    @return $result 患者のリハビリ予約が入っているスタッフの名前を入れた多次元配列
-    @var    array */
+    /**
+     * 患者が割り当てられているスタッフの氏名を獲得するメソッド  
+     * @param int $job
+     * @param string $reservation_date
+     * @return array 患者のリハビリ予約が入っているスタッフの名前を入れた多次元配列
+     */
     public function getSelectedWorkers(
         $job,
         $reservation_date
@@ -322,13 +315,12 @@ class SelectStaff
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* 出勤しているスタッフ全員の氏名を取得するメソッド 
-    person/select_complete 
-    @param  $job int
-            $reservation_date date
-    @return $result 出勤しているすべてのスタッフの名前を入れた多次元配列
-    @var    array */
+    /**
+     * 出勤しているスタッフ全員の氏名を取得するメソッド 
+     * @param int $job
+     * @param string $reservation_date
+     * @return array 出勤しているすべてのスタッフの名前を入れた多次元配列 
+     */
     public function getWorkersNames(
         $job,
         $reservation_date
@@ -349,13 +341,12 @@ class SelectStaff
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* 担当者の調整が終わっている患者の氏名を取得するメソッド
-    person/select_complete 
-    @param  $job int
-            $reservation_date date
-    @return $result 当日のリハビリスタッフが登録された患者の名前を入れた多次元配列
-    @var    array　*/
+    /**
+     * 担当者の調整が終わっている患者の氏名を取得するメソッド 
+     * @param string $reservation_date
+     * @param int $job
+     * @return array 当日のリハビリスタッフが登録された患者の名前を入れた多次元配列
+     */
     public function getSelectedNames(
         $reservation_date,
         $job
@@ -380,13 +371,11 @@ class SelectStaff
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* 0単位に調整した患者の名前を取得するメソッド
-    person/select_complete 
-    @param  $job int
-            $reservation_date date
-    @return $result 指定した職種において調整した後の単位が0の患者名前を入れた多次元配列
-    @var    array */
+    /**
+     * 0単位に調整した患者の名前を取得するメソッド
+     * @param string $reservation_date
+     * @return array 指定した職種において調整した後の単位が0の患者名前を入れた多次元配列
+     */
     public function getNoUnitNames($reservation_date)
     {
         $updated_num = 0;
@@ -409,13 +398,12 @@ class SelectStaff
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* 全ての患者の名前を取得するメソッド
-    person/select_complete 
-    @param  $job int
-            $reservation_date date
-    @return $result 全ての患者の名前を入れた多次元配列(基本単位が0の患者は除く)
-    @var    array   */
+    /**
+     * 全ての患者の名前を取得するメソッド
+     * @param int $job
+     * @param string $reservation_date
+     * @return array 全ての患者の名前を入れた多次元配列(基本単位が0の患者は除く)
+     */
     public function getAllNamesByJob(
         $job,
         $reservation_date

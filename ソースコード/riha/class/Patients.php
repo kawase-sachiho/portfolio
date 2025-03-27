@@ -2,7 +2,6 @@
 class Patients
 {
     private $pdo;
-
     const NOT_DELETE = 0;
     const DELETE = 1;
 
@@ -11,10 +10,10 @@ class Patients
         $this->pdo = $pdo;
     }
 
-    /*　患者情報を全員分取得して表示するメソッド
-    patient/index
-    @return $result 全ての患者の情報が入った多次元配列
-    @var    array　*/
+    /**
+     * 患者情報を全員分取得して表示するメソッド
+     * @return array 全ての患者の情報が入った多次元配列
+     */
     public function getAllPatients()
     {
         $sql = '';
@@ -44,24 +43,23 @@ class Patients
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* 患者を新規で追加するメソッド
-    patient/add 
-    @param  $patient_name str
-            $patient_family_name str
-            $patient_first_name str/
-            $hope_gender int
-            $staff_experience int
-            $emergency_ris int
-            $started_date date
-            $pt_base_id int
-            $ot_base_id int
-            $st_base_id int
-            $pt_base_num int
-            $ot_base_num int
-            $st_base_num int
-    @return $result 患者のデータを新たに挿入した結果   
-    @var    bool   */
+    /**
+     * 患者を新規で追加するメソッド
+     * @param string $patient_name
+     * @param string $patient_family_name
+     * @param string $patient_first_name
+     * @param int $hope_gender
+     * @param int $staff_experience
+     * @param int $emergency_risk
+     * @param string $started_date
+     * @param int $pt_base_id
+     * @param int $ot_base_id
+     * @param int $st_base_id
+     * @param int $pt_base_num
+     * @param int $ot_base_num
+     * @param int $st_base_num
+     * @return bool 患者のデータを新たに挿入した結果
+     */
     public function addPatients(
         $patient_name,
         $patient_family_name,
@@ -127,12 +125,11 @@ class Patients
         $result = $stmt->execute();
         return $result;
     }
-
-    /*指定した患者の情報を表示するメソッド
-    patient/info, patient/delete, patient/edit 
-    @param  $id　int
-    @return $result 指定した患者の情報が入った連想配列
-    @var    array */
+    /**
+     * 指定した患者の情報を表示するメソッド
+     * @param int $id
+     * @return array 指定した患者の情報が入った連想配列
+     */
     public function showPatientInfo($id)
     {
         $sql = '';
@@ -160,25 +157,24 @@ class Patients
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*患者情報を更新するメソッド
-    patient/edit_aciton
-    @param  $id int 
-            $patient_name str 
-            $patient_family_name str
-            $patient_first_name str
-            $hope_gender int
-            $staff_experience int
-            $emergency_ris int
-            $started_date date
-            $pt_base_id int
-            $ot_base_id int
-            $st_base_id int
-            $pt_base_num int
-            $ot_base_num int
-            $st_base_num int
-    @return $result 患者データを更新した結果
-    @var    bool */
+    /**
+     * 患者情報を更新するメソッド
+     * @param int $id
+     * @param string $patient_name
+     * @param string $patient_family_name
+     * @param string $patient_first_name
+     * @param int $hope_gender
+     * @param int $staff_experience
+     * @param int $emergency_risk
+     * @param string $started_date
+     * @param int $pt_base_id
+     * @param int $ot_base_id
+     * @param int $st_base_id
+     * @param int $pt_base_num
+     * @param int $ot_base_num
+     * @param int $st_base_num
+     * @return bool 患者データを更新した結果
+     */
     public function editPatients(
         $id,
         $patient_name,
@@ -238,13 +234,13 @@ class Patients
         $result = $stmt->execute();
         return $result;
     }
-
     /*削除画面に関するメソッド */
-    /*予約済のレコードがあるか確認するメソッド
-    @param  $id int
-            $day date
-    @return $result 指定した患者の当日以降のリハビリ予約を確認し、存在すれば日付を返却する
-    @var    array */
+    /**
+     * 予約済のレコードがあるか確認するメソッド
+     * @param int $id
+     * @param string $day
+     * @return array 指定した患者の当日以降のリハビリ予約を確認し、存在すれば日付を返却する
+     */
     public function checkReservationByPatient(
         $id,
         $day
@@ -268,11 +264,11 @@ class Patients
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*患者情報を削除するメソッド
-    @param $id int
-    @return $result 患者データを削除した結果
-    @var    bool */
+    /**
+     * 患者情報を削除するメソッド
+     * @param int $id
+     * @return bool 患者データを削除した結果
+     */
     public function deletePatients($id)
     {
         $sql = '';

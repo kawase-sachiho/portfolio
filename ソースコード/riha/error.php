@@ -2,6 +2,7 @@
 session_start();
 session_regenerate_id();
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:./login/index.php');
     exit;

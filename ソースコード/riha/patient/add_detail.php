@@ -83,7 +83,6 @@ try {
         $started_date = $_SESSION['patient']['started_date'];
     }
     unset($rec);
-
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
     $day = Date::getDate();

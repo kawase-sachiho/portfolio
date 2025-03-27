@@ -7,6 +7,7 @@ require_once('../class/db/Safety.php');
 require_once('../class/Common.php');
 require_once('../class/Staffs.php');
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
@@ -15,10 +16,7 @@ unset($_SESSION['staff']);
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
-
     //スタッフ全員の情報を取得するメソッド
     $all_staffs = new Staffs($pdo);
     $staffs = $all_staffs->getStaffInfo();

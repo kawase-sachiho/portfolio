@@ -8,15 +8,14 @@ require_once('../class/Common.php');
 require_once('../class/Patients.php');
 require_once('../class/selectStaff.php');
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
 }
-
 //データベースへ接続する
 $pdo = Base::getInstance();
 $token = Safety::generateToken();
-
 //ユーザー名をidから取得する
 $id = $_GET['id'];
 
@@ -24,7 +23,6 @@ try {
     //患者情報を取得して表示するメソッド
     $patient_info = new Patients($pdo);
     $patient = $patient_info->showPatientInfo($id);
-
     //担当PTの獲得
     $job = 0;
     $base_id = $patient['pt_base_id'];
@@ -33,7 +31,6 @@ try {
         $base_id,
         $job
     );
-
     //担当OTの獲得
     $job = 1;
     $base_id = $patient['ot_base_id'];
@@ -42,7 +39,6 @@ try {
         $base_id,
         $job
     );
-
     //担当STの獲得
     $job = 2;
     $base_id = $patient['st_base_id'];
@@ -55,7 +51,6 @@ try {
     header('Location:../error.php');
     exit;
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">

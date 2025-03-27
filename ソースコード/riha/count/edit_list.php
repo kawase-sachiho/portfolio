@@ -15,8 +15,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
 
     //前のページで計算した値を入れると共に、editのページで保存した値を代入したい

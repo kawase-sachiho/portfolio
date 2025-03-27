@@ -3,6 +3,7 @@ session_start();
 session_regenerate_id();
 require_once('./class/db/Base.php');
 require_once('./class/db/Safety.php');
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:./login/index.php');
     exit;

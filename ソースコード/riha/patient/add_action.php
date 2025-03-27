@@ -58,10 +58,8 @@ try {
         header('Location:./add_detail.php');
         return;
     }
-
     //データベースへ接続する
     $pdo = Base::getInstance();
-
     //患者を新たに追加するメソッド
     $add_patient = new Patients($pdo);
     $result = $add_patient->addPatients(
@@ -79,11 +77,9 @@ try {
         $ot_base_num,
         $st_base_num
     );
-
     if ($result) {
         //正常終了した場合はメッセージを削除
         unset($_SESSION['err']['msg']);
-
         header('Location:./index.php');
     }
 } catch (Exception $e) {

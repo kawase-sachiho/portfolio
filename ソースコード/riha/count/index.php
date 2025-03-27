@@ -15,8 +15,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
     unset($_SESSION['patient']);
 } catch (Exception $e) {

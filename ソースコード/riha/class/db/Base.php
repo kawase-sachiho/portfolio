@@ -1,5 +1,5 @@
 <?php
-/* データベースに関するクラス */
+/** データベースに関するクラス */
 class Base
 {
     const DB_NAME = "riha";
@@ -9,13 +9,10 @@ class Base
     const DSN = 'mysql:dbname=' . self::DB_NAME . ';host=' . self::DB_HOST . ';charset=utf8';
 
     private static $pdo;
-
-   /* 
-   @param 
-   @return PDOクラスのインスタンスを生成して返却
-   @var 
-   */
-
+/**
+ * PDOクラスのインスタンスを生成して返却
+ * @return void
+ */
     public static function getInstance()
     {
         if (!isset(self::$pdo)) {

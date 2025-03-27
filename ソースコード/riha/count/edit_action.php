@@ -8,8 +8,6 @@ require_once('../class/Common.php');
 require_once('../class/CountUnit.php');
 
 $pdo = Base::getInstance();
-
-//本日の日付を取得し$dayに入れる
 $day = Date::getDate();
 
 //ワンタイムトークンのチェック

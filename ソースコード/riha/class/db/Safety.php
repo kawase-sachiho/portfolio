@@ -1,27 +1,25 @@
 <?php
-/*　セキュリティ対策に関するメソッド */
+/** セキュリティ対策に関するメソッド */
 class Safety
 {
 const RANDAM_PSEUDO_STRING_LENGTH=32;
-
-/* 
-    @param　tokenName :string
-    @return $token　ランダムトークンを生成して返却する
-    @var    string 
-*/
+/**
+ * ランダムトークンを生成して返却するメソッド
+ * @param string $tokenName
+ * @return string
+ */
 public static function generateToken(string $tokenName = 'token') : string
 {
     $token=bin2hex(openssl_random_pseudo_bytes(self::RANDAM_PSEUDO_STRING_LENGTH));
     $_SESSION[$tokenName]=$token;
     return $token;
 }
-
-/* 
-@param  string $token
-        string $tokenName
-@return bool トークンが一致しているかを判断する
-@var    bool 
-*/
+/**
+ * トークンが一致しているか判断するメソッド
+ * @param string $token
+ * @param string $tokenName
+ * @return bool トークンが一致していればtrue
+ */
 public static function isValidToken(string $token,string $tokenName='token'):bool
 {
     if(!isset($_SESSION[$tokenName]) || $_SESSION[$tokenName] != $token)
@@ -30,11 +28,11 @@ public static function isValidToken(string $token,string $tokenName='token'):boo
     }
     return true;
 }
-
-/* 
-@param  $before サニタイズする前の配列
-@return $after サニタイズされた後の配列
-@var    array */
+/**
+ * 送られてきた配列データをサニタイズするメソッド
+ * @param array $before サニタイズする前の配列
+ * @return array サニタイズされた後の配列
+ */
 public static function sanitaize($before)
     {
         $after = array();

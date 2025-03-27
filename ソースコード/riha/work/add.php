@@ -6,6 +6,7 @@ require_once('../class/db/Base.php');
 require_once('../class/db/Safety.php');
 require_once('../class/Common.php');
 require_once('../class/Work.php');
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
@@ -13,8 +14,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
 } catch (Exception $e) {
     header('Location:../error.php');
@@ -120,10 +119,10 @@ try {
             出勤登録
         </h4>
         <div class="text text-danger font-weight-bold"><?php
-                                                    if (isset($_SESSION['err']['msg'])) {
-                                                        echo $_SESSION['err']['msg'];
-                                                    }
-                                                    ?>
+                                                        if (isset($_SESSION['err']['msg'])) {
+                                                            echo $_SESSION['err']['msg'];
+                                                        }
+                                                        ?>
         </div>
         <div class="text text-primary font-weight-bold">
             <?php if (isset($_POST['job']) && !empty($_POST['working_date']) && !empty($reservation_names)) {

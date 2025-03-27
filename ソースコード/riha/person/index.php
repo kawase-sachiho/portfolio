@@ -13,11 +13,8 @@ if (empty($_SESSION['user'])) {
 }
 $pdo = Base::getInstance();
 $token = Safety::generateToken();
-//本日の日付を取得し$dayに入れる
 $day = Date::getDate();
-
 unset($_SESSION['select']);
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -39,7 +36,7 @@ unset($_SESSION['select']);
         <h1 class="my-5 text-center text-warning"><u>担当スタッフの調整</u></h1>
         <div class="font-weight-bold text-danger mb-5">
             <u><?php if (isset($_SESSION['err']['msg'])) {
-                    echo "！" . $_SESSION['err']['msg'] . "！";
+                    echo "!" . $_SESSION['err']['msg'] . "!";
                 } ?>
             </u>
         </div>

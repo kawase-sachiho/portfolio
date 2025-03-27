@@ -7,7 +7,7 @@ try {
     require_once('../class/db/Base.php');
     require_once('../class/Common.php');
     require_once('../class/Staffs.php');
-
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
@@ -15,14 +15,11 @@ try {
     //データベースへ接続する
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
     $id = $_GET['id'];
-
     //スタッフ情報を表示するメソッド
     $staff_info = new Staffs($pdo);
     $staff = $staff_info->getStaffInfoById($id);
-} catch (Exception $e) 
-{
+} catch (Exception $e) {
     header('Location:../error.php');
     exit;
 }

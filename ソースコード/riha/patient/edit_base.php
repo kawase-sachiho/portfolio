@@ -7,7 +7,7 @@ try {
     require_once('../class/db/Base.php');
     require_once('../class/Patients.php');
 
-    //ログイン状態の確認
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
@@ -31,10 +31,8 @@ try {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +40,6 @@ try {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="../class/css/style.css">
 </head>
-
 <body>
     <div class="container">
         <div class="mt-5 text-right">
@@ -151,7 +148,6 @@ try {
                                 <button type="submit" class="btn btn-lg btn-primary">担当者の修正へ</button>
                             </th>
                         </tr>
-
                     </tbody>
                 </form>
             </table>
@@ -162,5 +158,4 @@ try {
         </div>
     </div>
 </body>
-
 </html>

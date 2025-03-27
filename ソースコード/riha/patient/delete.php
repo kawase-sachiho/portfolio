@@ -9,17 +9,16 @@ try {
     require_once('../class/Patients.php');
     require_once('../class/SelectStaff.php');
 
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
     }
-
     //データベースへ接続する
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
 
     //ユーザー名をidから取得する
-
     if (isset($_GET['id'])) {
         $id = $_GET['id'];
     } elseif (isset($_SESSION['patient']['reservation_days'])) {

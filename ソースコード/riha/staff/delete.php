@@ -8,12 +8,11 @@ try {
     require_once('../class/Common.php');
     require_once('../class/Staffs.php');
 
-
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
     }
-
     //データベースへ接続する
     $pdo = Base::getInstance();
     $token = Safety::generateToken();

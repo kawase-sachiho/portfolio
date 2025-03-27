@@ -7,6 +7,7 @@ try {
     require_once('../class/db/Base.php');
     require_once('../class/Users.php');
 
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
@@ -14,9 +15,7 @@ try {
     //データベースへ接続する
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
     $id = $_SESSION['user']['id'];
-
     //ユーザー情報を取得するメソッド
     $login_user=new Users($pdo);
     $user=$login_user->getUserInfo($id);

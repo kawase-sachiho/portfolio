@@ -7,6 +7,7 @@ require_once('../class/db/Safety.php');
 require_once('../class/Common.php');
 require_once('../class/Table.php');
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
@@ -14,8 +15,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
 } catch (Exception $e) {
     header('Location:../error.php');
@@ -76,11 +75,9 @@ try {
                 exit;
             } elseif (isset($_POST['job']) && !empty($_POST['reservation_date'])) {
                 $post = Safety::sanitaize($_POST);
-
                 unset($_SESSION['err']['msg']);
                 $job = $post['job'];
                 $reservation_date = $post['reservation_date'];
-
                 //指定した日の介入表を表示するメソッド
                 $today_staff_table = new Table($pdo);
                 $staffs = $today_staff_table->getTodayNumbersByStaff(

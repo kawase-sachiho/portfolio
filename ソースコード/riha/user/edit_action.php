@@ -6,6 +6,7 @@ require_once('../class/db/Base.php');
 require_once('../class/db/Safety.php');
 require_once('../class/Users.php');
 
+//トークンのチェック
 if (!Safety::isValidToken($_POST['token'])) {
     $_SESSION['err']['msg'] = "不正な処理が行われました";
     header('Location:../error.php');
@@ -13,7 +14,6 @@ if (!Safety::isValidToken($_POST['token'])) {
 } else {
     unset($_SESSION['err']['msg']);
 }
-
 try {
     unset($_SESSION['post']);
     //メールアドレスの修正ボタンが押された場合
@@ -42,7 +42,6 @@ try {
             $mail
         );
     }
-
     //パスワードの変更ボタンが押された場合
     if (!empty($_POST['password'])) {
         //空欄があった場合
@@ -62,9 +61,7 @@ try {
         $pass = $post['pass'];
         $pass = password_hash($pass, PASSWORD_DEFAULT);
         $id = $_POST['id'];
-
         $pdo = Base::getInstance();
-
         //パスワードを変更するメソッド
         $change_pass = new Users($pdo);
         $changed_pass = $change_pass->changePass(

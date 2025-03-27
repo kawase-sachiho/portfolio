@@ -7,7 +7,7 @@ require_once('../class/db/Safety.php');
 require_once('../class/Common.php');
 require_once('../class/Staffs.php');
 
-//ワンタイムトークンのチェック
+//トークンのチェック
 if (!Safety::isValidToken($_POST['token'])) {
     $_SESSION['err']['msg'] = "不正な処理が行われました";
     header('Location:../error.php');
@@ -15,24 +15,19 @@ if (!Safety::isValidToken($_POST['token'])) {
 } else {
     unset($_SESSION['err']['msg']);
 }
-
 try {
     $day = Date::getDate();
     $id = $_POST['id'];
-
     //データベースへ接続する
     $pdo = Base::getInstance();
-
     //担当患者の有無を確認するメソッド
     $check_handle_patient = new Staffs($pdo);
     $patients = $check_handle_patient->checkPatientByStaff($id);
-
     //担当患者の名前を配列に入れる
     $patient_names = array();
     foreach ($patients as $patient) {
         array_push($patient_names, $patient['patient_name']);
     }
-
     //担当患者が1人でもいればリダイレクトする
     if (!empty($patient_names)) {
         $_SESSION['staff']['id'] = $id;
@@ -40,14 +35,12 @@ try {
         header('Location:./delete.php');
         exit;
     }
-
     //予約済のレコードがあるか確認するメソッド
     $check_staff_reservation = new Staffs($pdo);
     $reservation_dates = $check_staff_reservation->checkReservationByStaff(
         $id,
         $day
     );
-
     //予約されている日の日程を配列に入れる
     $reservation_days = array();
     foreach ($reservation_dates as $reservation_date) {
@@ -66,13 +59,11 @@ try {
         $id,
         $day
     );
-
     //出勤日(予約)を配列に入れる
     $working_days = array();
     foreach ($working_dates as $working_date) {
         array_push($working_days, $working_date['working_date']);
     }
-
     //出勤の予定があればリダイレクトする
     if (!empty($working_days)) {
         $_SESSION['staff']['id'] = $id;
@@ -80,7 +71,6 @@ try {
         header('Location:./delete.php');
         exit;
     }
-
     //担当患者もおらず、リハビリ予約もなく、出勤の予定もない場合
     if (empty($patient_names) && empty($reservation_days) && empty($working_days)) {
         //スタッフのデータを削除

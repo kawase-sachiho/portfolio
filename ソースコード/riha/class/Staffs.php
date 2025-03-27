@@ -3,7 +3,6 @@
 class Staffs
 {
     private $pdo;
-
     const NOT_DELETE = 0;
     const DELETE = 1;
 
@@ -11,11 +10,10 @@ class Staffs
     {
         $this->pdo = $pdo;
     }
-
-    /*スタッフ全員の情報を取得するメソッド
-    staff/index
-    @return $result 全てのリハビリスタッフの情報を入れた多次元配列
-    @var    array */
+    /**
+     * スタッフ全員の情報を取得するメソッド
+     * @return array 全てのリハビリスタッフの情報を入れた多次元配列 
+     */
     public function getStaffInfo()
     {
         $sql = '';
@@ -34,12 +32,11 @@ class Staffs
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*メールアドレスが一致するスタッフを省くメソッド
-    staff/add_action
-    @param  $mail int
-    @return $result メールアドレスが一致したスタッフの情報を取得した連想配列
-    @var    array */
+    /**
+     * メールアドレスが一致するスタッフを省くメソッド
+     * @param string $mail
+     * @return array メールアドレスが一致したスタッフの情報を取得した連想配列
+     */
     public function getStaffByMail($mail)
     {
         $sql = 'SELECT * FROM staff_list ';
@@ -52,20 +49,19 @@ class Staffs
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /* スタッフを新規で追加するメソッド
-    staff/add_action 
-    @param  $staff_name str
-            $staff_family_name str
-            $staff_first_name str
-            $job int
-            $staff_gender int
-            $job_started_date date
-            $emergency_skill int
-            $mail str
-            $pass str
-    @return $result 新規にスタッフのデータを挿入した結果
-    @var    bool */
+    /**
+     * スタッフを新規で追加するメソッド
+     * @param string $staff_name
+     * @param string $staff_family_name
+     * @param string $staff_first_name
+     * @param int $job
+     * @param int $staff_gender
+     * @param string $job_started_date
+     * @param int $emergency_skill
+     * @param string $mail
+     * @param string $pass
+     * @return bool 新規にスタッフのデータを挿入した結果
+     */
     public function addStaff(
         $staff_name,
         $staff_family_name,
@@ -112,12 +108,11 @@ class Staffs
         $result = $stmt->execute();
         return $result;
     }
-
-    /*指定したスタッフの情報を取得するメソッド
-    staff/info staff/edit staff/delete 
-    @param  $id int
-    @return $result idが一致したスタッフの情報を入れた連想配列 
-    @var    array */
+    /**
+     * 指定したスタッフの情報を取得するメソッド 
+     * @param int $id
+     * @return array idが一致したスタッフの情報を入れた連想配列 
+     */
     public function getStaffInfoById($id)
     {
         $sql = '';
@@ -140,19 +135,18 @@ class Staffs
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*スタッフのデータを更新するメソッド 
-    staff/edit_action 
-    @param  $staff_name str
-            $staff_family_name str
-            $staff_first_name str
-            $job int
-            $staff_gender int
-            $job_started_date date
-            $emergency_skill int
-            $mail str
-            $pass str
-    @return $result スタッフのデータを変更した結果
-    @var bool */
+    /**
+     * スタッフのデータを更新するメソッド 
+     * @param int $id
+     * @param string $staff_name
+     * @param string $staff_family_name
+     * @param string $staff_first_name
+     * @param int $job
+     * @param int $staff_gender
+     * @param string $job_started_date
+     * @param int $emergency_skill
+     * @return bool スタッフのデータを変更した結果
+     */
     public function editStaff(
         $id,
         $staff_name,
@@ -193,11 +187,10 @@ class Staffs
     }
 
     /*スタッフ削除に関するメソッド */
-    /*担当者の有無を確認するメソッド
-    staff/delete_action 
-    @param  $id int
-    @return $result idが一致するスタッフの担当患者の名前を入れた連想配列
-    @var    array */
+    /**
+     * @param int $id
+     * @return array idが一致するスタッフの担当患者の名前を入れた連想配列
+     */
     public function checkPatientByStaff($id)
     {
         $sql = '';
@@ -205,7 +198,9 @@ class Staffs
         $sql .= 'p.patient_name ';
         $sql .= 'FROM patient_list as p ';
         $sql .= 'WHERE pt_base_id = :pt_base_id ';
+        $sql .= 'AND is_deleted=:is_deleted ';
         $sql .= 'OR ot_base_id = :ot_base_id ';
+        $sql .= 'AND is_deleted=:is_deleted ';
         $sql .= 'OR st_base_id = :st_base_id ';
         $sql .= 'AND is_deleted=:is_deleted ';
         $stmt = $this->pdo->prepare($sql);
@@ -217,13 +212,12 @@ class Staffs
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*予約済のレコードがあるか確認するメソッド 
-    staff/delete_action 
-    @param  $id int
-            $day date
-    @return $result idが一致するスタッフの登録されているリハビリ予約の日程を入れた連想配列
-    @var    array */
+    /**
+     * 予約済のレコードがあるか確認するメソッド 
+     * @param int $id
+     * @param string $day
+     * @return array idが一致するスタッフの登録されているリハビリ予約の日程を入れた連想配列
+     */
     public function checkReservationByStaff(
         $id,
         $day
@@ -243,13 +237,12 @@ class Staffs
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*出勤の予約があるが確認するメソッド
-    staff/delete_action
-    @param  $id int
-            $day date
-    @return $result idが一致するスタッフの登録されている出勤日の日程を入れた連想配列
-    @var    array */
+    /**
+     * 出勤の予約があるが確認するメソッド
+     * @param int $id
+     * @param string $day
+     * @return array idが一致するスタッフの登録されている出勤日の日程を入れた連想配列
+     */
     public function checkWorking(
         $id,
         $day
@@ -269,12 +262,11 @@ class Staffs
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*スタッフを削除するメソッド
-    staff/delete_action
-    @param  $id int
-    @return $result idが一致したスタッフを削除した結果 
-    @var    bool */
+    /**
+     * スタッフを削除するメソッド 
+     * @param int $id
+     * @return bool idが一致したスタッフを削除した結果 
+     */
     public function deleteStaff($id)
     {
         $sql = '';

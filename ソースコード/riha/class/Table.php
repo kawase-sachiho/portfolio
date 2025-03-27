@@ -1,9 +1,9 @@
 <?php
-/* 介入表・担当者一覧表の表示に関するクラス */
+
+/** 介入表・担当者一覧表の表示に関するクラス */
 class Table
 {
     private $pdo;
-
     const NOT_DELETE = 0;
     const DELETE = 1;
 
@@ -11,12 +11,12 @@ class Table
     {
         $this->pdo = $pdo;
     }
-
-    /*　スタッフと紐づけした患者と単位数を表示するメソッド 
-    @param  $job int
-            $reservation_date date
-    @return $result スタッフごとの当日の担当患者のid・名前・単位数、その日の合計単位を取得した多次元配列
-    @var    $result array */
+    /**
+     * スタッフと紐づけした患者と単位数を表示するメソッド 
+     * @param int $job
+     * @param string $reservation_date
+     * @return array スタッフごとの当日の担当患者のid・名前・単位数、その日の合計単位を取得した多次元配列
+     */
     public function getTodayNumbersByStaff(
         $job,
         $reservation_date
@@ -80,18 +80,17 @@ class Table
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-
-    /*全てのスタッフの担当患者と基本単位を取得  
-    @param  $job int
-            $reservation_date date
-    @return $result スタッフごとの担当患者の名前・単位数、合計単位を取得した多次元配列
-    @var    array */
+    /**
+     * 全てのスタッフの担当患者と基本単位を取得
+     * @param int $job
+     * @param string $reservation_date
+     * @return array スタッフごとの担当患者の名前・単位数、合計単位を取得した多次元配列
+     */
     public function getBaseNumbersByStaff(
         $job,
         $reservation_date
     ) {
-        //null以外大文字にする
-        $sql = 'select tmp.staff_name
+     $sql = 'SELECT tmp.staff_name
     , MAX(CASE tmp.seq WHEN 1 THEN tmp.patient_name ELSE null END) AS patient_name1
     , MAX(CASE tmp.seq WHEN 2 THEN tmp.patient_name ELSE null END) AS patient_name2
     , MAX(CASE tmp.seq WHEN 3 THEN tmp.patient_name ELSE null END) AS patient_name3

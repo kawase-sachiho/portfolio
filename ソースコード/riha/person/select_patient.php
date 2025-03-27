@@ -9,15 +9,13 @@ require_once('../class/SelectStaff.php');
 require_once('../class/CountUnit.php');
 require_once('../class/Table.php');
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
 }
-
 $pdo = Base::getInstance();
 $token = Safety::generateToken();
-
-//本日の日付を取得し$dayに入れる
 $day = Date::getDate();
 
 //日付の値が未選択かつセッションにも値がない場合はリダイレクトする
@@ -26,7 +24,6 @@ if (!isset($_POST['reservation_date']) && !isset($_SESSION['select']['reservatio
     header('Location:./index.php');
     return;
 }
-
 //セッションまたはPOSTから値を代入する
 if (isset($_SESSION['select'])) {
     $reservation_date = $_SESSION['select']['reservation_date'];
@@ -47,13 +44,12 @@ if (isset($_SESSION['select']['staff_name'])) {
 if (isset($_SESSION['select']['patient_name'])) {
     $patient_names = $_SESSION['select']['patient_name'];
 }
-//勤務テーブルから　職種、出勤人数を獲得
+//勤務テーブルから職種、出勤人数を獲得
 $workers_num = new SelectStaff($pdo);
 $working_staffs = $workers_num->countStaffByRihaDate(
     $reservation_date,
     $job
 );
-
 //出勤者が0の場合、リダイレクトする
 if ($working_staffs['count'] == 0) {
     $_SESSION['err']['msg'] = "出勤スタッフが登録されていません";

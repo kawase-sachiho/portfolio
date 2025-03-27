@@ -15,7 +15,6 @@ if (!Safety::isValidToken($_POST['token'])) {
 } else {
     unset($_SESSION['err']['msg']);
 }
-
 try {
 
     unset($_SESSION['patient']);
@@ -32,13 +31,10 @@ try {
         $id,
         $day
     );
-
     $reservation_days = array();
-
     foreach ($reservation_dates as $reservation_date) {
         array_push($reservation_days, $reservation_date['reservation_date']);
     }
-
     //リハビリ予約がある場合はリダイレクトする
     if (!empty($reservation_days)) {
         $_SESSION['patient']['id'] = $id;

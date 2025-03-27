@@ -8,6 +8,7 @@ require_once('../class/Common.php');
 require_once('../class/CountUnit.php');
 require_once('../class/SelectStaff.php');
 
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
@@ -16,8 +17,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
 
     //前のページで計算した値を入れると共に、editのページで保存した値を代入したい
@@ -38,14 +37,13 @@ try {
     //患者と担当者情報の獲得するメソッド
     $patient_and_staff = new SelectStaff($pdo);
     $patient_info = $patient_and_staff->getPatientAndStaff($patient_id);
-
+    
     $hope_gender = $patient_info['hope_gender'];
     $staff_experience = $patient_info['staff_experience'];
     $emergency_risk = $patient_info['emergency_risk'];
     $pt_base_id = $patient_info['pt_base_id'];
     $ot_base_id = $patient_info['ot_base_id'];
     $st_base_id = $patient_info['st_base_id'];
-
     $working_date = $reservation_date;
 
     //担当PTの獲得
@@ -55,7 +53,6 @@ try {
         $base_id,
         $job
     );
-
     //担当OTの獲得
     $base_id = $ot_base_id;
     $base_ot_info = new SelectStaff($pdo);
@@ -63,7 +60,6 @@ try {
         $base_id,
         $job
     );
-
     //担当STの獲得
     $base_id = $st_base_id;
     $base_st_info = new SelectStaff($pdo);
@@ -71,14 +67,12 @@ try {
         $base_id,
         $job
     );
-
     //単位調整済かどうか確認するメソッド
     $check_unit_changed = new CountUnit($pdo);
     $patient = $check_unit_changed->checkUpadateUnit(
         $patient_id,
         $working_date
     );
-
     if ($patient) {
         $patient_name = $patient['patient_name'];
         if ($job == 0) {
@@ -200,23 +194,19 @@ try {
                         <tr>
                             <td class="col-4">
                                 <?php if ($job == 0) {
-
                                     //PTのみを抽出して連想配列に入れる
                                     $staff_pt = new CountUnit($pdo);
                                     $pts = $staff_pt->getWorkingStaffByJob(
                                         $job,
                                         $working_date
                                     );
-
                                     $pt_3unders = array();
                                     $pt_3overs = array();
                                     $pt_skills = array();
-
                                     //PT男性スタッフのみ取り出し
                                     $pt_mens = array();
                                     $pt_men_3overs = array();
                                     $pt_men_skills = array();
-
                                     foreach ($pts as $pt) {
                                         if ($pt['staff_gender'] == 0) {
                                             array_push($pt_mens, $pt);
@@ -234,7 +224,6 @@ try {
                                     $pt_womens = array();
                                     $pt_women_3overs = array();
                                     $pt_women_skills = array();
-
                                     foreach ($pts as $pt) {
                                         if ($pt['staff_gender'] == 1) {
                                             array_push($pt_womens, $pt);
@@ -275,7 +264,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //男性、３年目以上(救急対応不可含む全員)
                                         foreach ($pt_men_3overs as $pt_men_3over) {
                                             if ($hope_gender == 1 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -288,7 +276,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //男性、３年目以下、救急対応不可(＝全員)
                                         foreach ($pt_mens as $pt_men) {
                                             if ($hope_gender == 1 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -301,7 +288,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //女性、３年目以上、救急対応可能
                                         foreach ($pt_women_skills as $pt_women_skill) {
                                             if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 1) {
@@ -314,7 +300,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //女性、３年目以上(救急対応不可含む全員)
                                         foreach ($pt_women_3overs as $pt_women_3over) {
                                             if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -327,7 +312,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //女性全員
                                         foreach ($pt_womens as $pt_women) {
                                             if ($hope_gender == 2 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -340,7 +324,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //性別指定なし、3年目以上
                                         foreach ($pt_3overs as $pt_3over) {
                                             if ($hope_gender == 0 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -365,7 +348,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         //PT全員
                                         foreach ($pts as $pt) {
                                             if ($hope_gender == 0 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -382,16 +364,13 @@ try {
                                         //OTのみ抽出して連想配列に入れる
                                         $staff_ot = new CountUnit($pdo);
                                         $ots = $staff_ot->getWorkingStaffByJob($job, $working_date);
-
                                         $ot_3unders = array();
                                         $ot_3overs = array();
                                         $ot_skills = array();
-
                                         //PT男性スタッフのみ取り出し
                                         $ot_mens = array();
                                         $ot_men_3overs = array();
                                         $ot_men_skills = array();
-
                                         foreach ($ots as $ot) {
                                             if ($ot['staff_gender'] == 0) {
                                                 array_push($ot_mens, $ot);
@@ -409,7 +388,6 @@ try {
                                         $ot_womens = array();
                                         $ot_women_3overs = array();
                                         $ot_women_skills = array();
-
                                         foreach ($ots as $ot) {
                                             if ($ot['staff_gender'] == 1) {
                                                 array_push($ot_womens, $ot);
@@ -423,7 +401,6 @@ try {
                                                 }
                                             }
                                         }
-
                                         foreach ($ots as $ot) {
                                             if (Date::getExperience($day, $ot)) {
                                                 array_push($ot_3overs, $ot);
@@ -451,7 +428,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //男性、３年目以上(救急対応不可含む全員)
                                             foreach ($ot_men_3overs as $ot_men_3over) {
                                                 if ($hope_gender == 1 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -464,7 +440,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //男性、３年目以下、救急対応不可(＝全員)
                                             foreach ($ot_mens as $ot_men) {
                                                 if ($hope_gender == 1 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -477,7 +452,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性、３年目以上、救急対応可能
                                             foreach ($ot_women_skills as $ot_women_skill) {
                                                 if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 1) {
@@ -490,7 +464,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性、３年目以上(救急対応不可含む全員)
                                             foreach ($ot_women_3overs as $ot_women_3over) {
                                                 if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -503,7 +476,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性全員
                                             foreach ($ot_womens as $ot_women) {
                                                 if ($hope_gender == 2 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -516,7 +488,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //性別指定なし、3年目以上
                                             foreach ($ot_3overs as $ot_3over) {
                                                 if ($hope_gender == 0 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -529,7 +500,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //性別指定なし、３年目以上、救急対応可能
                                             foreach ($ot_skills as $ot_skill) {
                                                 if ($hope_gender == 0 && $staff_experience == 1 && $emergency_risk == 1) {
@@ -542,7 +512,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //OT全員
                                             foreach ($ots as $ot) {
                                                 if ($hope_gender == 0 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -559,7 +528,7 @@ try {
                                             $job = 2;
                                             $staff_st = new CountUnit($pdo);
                                             $sts = $staff_st->getWorkingStaffByJob($job, $working_date);
-
+                                            
                                             $st_3unders = array();
                                             $st_3overs = array();
                                             $st_skills = array();
@@ -568,7 +537,6 @@ try {
                                             $st_mens = array();
                                             $st_men_3overs = array();
                                             $st_men_skills = array();
-
                                             foreach ($sts as $st) {
                                                 if ($st['staff_gender'] == 0) {
                                                     array_push($st_mens, $st);
@@ -586,7 +554,6 @@ try {
                                             $st_womens = array();
                                             $st_women_3overs = array();
                                             $st_women_skills = array();
-
                                             foreach ($sts as $st) {
                                                 if ($st['staff_gender'] == 1) {
                                                     array_push($st_womens, $st);
@@ -614,7 +581,6 @@ try {
                                             }
                                             ?>
                                             <select name="st_today_id" id="st_today_id" class="form-control input-md" type="select">
-
                                             <?php
                                             //男性、３年目以上、救急対応可能
                                             foreach ($st_men_skills as $st_men_skill) {
@@ -628,7 +594,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //男性、３年目以上(救急対応不可含む全員)
                                             foreach ($st_men_3overs as $st_men_3over) {
                                                 if ($hope_gender == 1 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -641,7 +606,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //男性、３年目以下、救急対応不可(＝全員)
                                             foreach ($st_mens as $st_men) {
                                                 if ($hope_gender == 1 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -654,7 +618,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性、３年目以上、救急対応可能
                                             foreach ($st_women_skills as $st_women_skill) {
                                                 if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 1) {
@@ -667,7 +630,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性、３年目以上(救急対応不可含む全員)
                                             foreach ($st_women_3overs as $st_women_3over) {
                                                 if ($hope_gender == 2 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -680,7 +642,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //女性全員
                                             foreach ($st_womens as $st_women) {
                                                 if ($hope_gender == 2 && $staff_experience == 0 && $emergency_risk == 0) {
@@ -693,7 +654,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //性別指定なし、3年目以上
                                             foreach ($st_3overs as $st_3over) {
                                                 if ($hope_gender == 0 && $staff_experience == 1 && $emergency_risk == 0) {
@@ -706,7 +666,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //性別指定なし、３年目以上、救急対応可能
                                             foreach ($st_skills as $st_skill) {
                                                 if ($hope_gender == 0 && $staff_experience == 1 && $emergency_risk == 1) {
@@ -719,7 +678,6 @@ try {
                                                     }
                                                 }
                                             }
-
                                             //OT全員
                                             foreach ($sts as $st) {
                                                 if ($hope_gender == 0 && $staff_experience == 0 && $emergency_risk == 0) {

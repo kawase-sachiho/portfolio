@@ -6,12 +6,11 @@ require_once('../class/db/Base.php');
 require_once('../class/db/Safety.php');
 require_once('../class/Staffs.php');
 
-
+//ログイン状態のチェック
 if (empty($_SESSION['user'])) {
     header('Location:../login/index.php');
     exit;
 }
-
 try{
 if(isset($_SESSION['staff']))
 {
@@ -24,7 +23,6 @@ if(isset($_SESSION['staff']))
     $mail=$_SESSION['staff']['mail'];
 
 }
-
 $pdo = Base::getInstance();
 $token = Safety::generateToken();
 }

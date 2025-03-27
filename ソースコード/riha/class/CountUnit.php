@@ -3,7 +3,6 @@
 class CountUnit
 {
     private $pdo;
-
     const NOT_DELETE = 0;
     const DELETE = 1;
     const EDIT = 1;
@@ -12,12 +11,11 @@ class CountUnit
     {
         $this->pdo = $pdo;
     }
-
-    /*勤務人数を集計するメソッド 
-    count/index
-    @param  $working_date date
-    @return $result 出勤人数を職種ごとに計算したデータを入れた配列
-    @var    array */
+    /**
+     * 勤務人数を集計するメソッド 
+     * @param string $working_date
+     * @return array 出勤人数を職種ごとに計算したデータを入れた配列
+     */
     public function countWorkingStaff($working_date)
     {
         $sql = '';
@@ -35,11 +33,11 @@ class CountUnit
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*　PT OT STの合計単位数を取得するメソッド
-    count/index
-    @param  $working_date date
-    @return $result 職種ごとの単位数の合計
-    @var    array */
+    /**
+     * PT/OT/STの合計単位数を取得するメソッド
+     * @param string $working_date
+     * @return array 出勤日に対するPT/OT/STそれぞれの合計単位数
+     */
     public function sumNumbers($working_date)
     {
         $sql = '';
@@ -57,11 +55,11 @@ class CountUnit
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*予約日とリハビリ開始日に基づいて患者一覧を取得するメソッド 
-    count/select
-    @param  $working_date date
-    @return $result 指定した日にリハビリの対象となる患者一覧
-    @var    array */
+    /**
+     * 予約日とリハビリ開始日に基づいて患者一覧を取得するメソッド
+     * @param string $working_date
+     * @return array 指定した日にリハビリの対象となる患者一覧
+     */
     public function getPatientsByRihaDate($working_date)
     {
         $sql = '';
@@ -79,12 +77,12 @@ class CountUnit
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    /* 単位調整が実施済かを確認するメソッド
-    count/edit 
-    @param  $patient_id int
-            $working_date date
-    @return $result リハビリ‐患者テーブルに存在する患者データを検索
-    @var    array */
+    /**
+     * 単位調整が実施済かを確認するメソッド
+     * @param int $patient_id
+     * @param string $working_date
+     * @return array リハビリ‐患者テーブルに存在する患者のデータ
+     */
     public function checkUpadateUnit(
         $patient_id,
         $working_date
@@ -107,13 +105,13 @@ class CountUnit
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*  PT OT STの調整済の単位を取得するメソッド
-    count/edit 
-    @param  $job int
-            $patinet_id int
-            $working_date date
-    @return $result リハビリ‐患者テーブルから単位を獲得する
-    @var    array   */
+    /**
+     * PT/OT/STの調整済の単位を取得するメソッド
+     * @param int $job
+     * @param int $patient_id
+     * @param string $working_date
+     * @return array 単位調整済の患者のid/リハビリ職種/単位数/リハビリ予約日を格納した配列
+     */
     public function getTodayNum(
         $job,
         $patient_id,
@@ -138,12 +136,12 @@ class CountUnit
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /* いずれかの職種のレコードが存在した場合に、PT・OT・STの基本単位を個別で取得
-    count/edit
-    @param  $job int
-            $patient_id int
-    @return $result 職種ごとの基本単位
-    @var    int */
+    /**
+     * いずれかの職種のレコードが存在した場合に、PT・OT・STの基本単位を個別で取得
+     * @param int $job
+     * @param int $patient_id
+     * @return int 職種ごとの基本単位数
+     */
     public function getBaseNumByJob(
         $job,
         $patient_id
@@ -189,11 +187,11 @@ class CountUnit
             return $result;
         }
     }
-    /*初回の単位調整の時　PT・OT・STの基本単位をまとめて取得する
-    count/edit
-    @param  $patient_id int
-    @return $result　PT・OT・STの基本単位と患者氏名が入った連想配列
-    @var    array */
+    /**
+     * 初回の単位調整の時 PT・OT・STの基本単位をまとめて取得する
+     * @param int $patient_id
+     * @return array PT・OT・STの基本単位と患者氏名が入った連想配列
+     */
     public function getBaseNumbers($patient_id)
     {
         $sql = '';
@@ -212,13 +210,13 @@ class CountUnit
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
-    /* 初回の単位調整か確認するメソッド 
-    count/edit
-    @param  $job int
-            $patient_id int
-            $working_date date
-    @return $result リハビリ‐患者テーブルに条件が合致するデータがあれば返却
-    @var    array */
+    /**
+     * 初回の単位調整か確認するメソッド 
+     * @param int $job
+     * @param int $patient_id
+     * @param string $working_date
+     * @return array リハビリ‐患者テーブルに条件が合致するデータがあれば返却
+     */
     public function checkUpdateUnitByJob(
         $job,
         $patient_id,
@@ -274,16 +272,14 @@ class CountUnit
             return $result;
         }
     }
-    /*2回目以降の単位変更を行うメソッド(PT)
-    count/edit_action 
-    @param  $patient_id int
-            $job int
-            $pt_today_num int
-            $ot_today_num int
-            $st_today_num int
-            $working_date date
-    @return $result リハビリ‐患者テーブルのPTの情報の更新
-    @var　  $bool */
+    /**
+     * 2回目以降の単位変更を行うメソッド
+     * @param int $patient_id
+     * @param int $job
+     * @param int $num
+     * @param string $working_date
+     * @return bool リハビリ-患者テーブルの情報の更新した結果
+     */
     public function reUpdateUnitByJob(
         $patient_id,
         $job,
@@ -343,14 +339,14 @@ class CountUnit
         $result = $stmt->execute();
         return $result;
     }
-    /*初回の単位調整を行うメソッド
-    count/edit_action
-    @param  $patient_id int
-            $job int
-            $num int
-            $working_date date
-    @return $result リハビリ‐患者テーブルにリハビリ情報を登録 
-    @var    bool　*/
+    /**
+     *  初回の単位調整を行うメソッド
+     * @param int $patient_id
+     * @param int $job
+     * @param string $working_date
+     * @param int $num
+     * @return bool リハビリ‐患者テーブルにリハビリ情報を登録した結果結果
+     */
     public function updateUnitByJob(
         $patient_id,
         $job,
@@ -415,11 +411,11 @@ class CountUnit
         $result = $stmt->execute();
         return $result;
     }
-    /*　単位調整した患者一覧を獲得するメソッド 
-    count/edit_list 
-    @param  $working_date date
-    @return $result 単位調整を行った全ての患者の名前・idが入った多次元配列
-    @var    array */
+    /**
+     * 単位調整した患者一覧を獲得するメソッド
+     * @param string $working_date
+     * @return array 単位調整を行った全ての患者の名前・idが入った多次元配列
+     */
     public function getPatientsUnitUpdated($working_date)
     {
         $sql = '';
@@ -441,12 +437,12 @@ class CountUnit
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*　調整した単位一覧を獲得するメソッド
-    count/edit_list 
-    @param  $job int
-            $working_date date
-    @return $result　単位調整を行った全ての患者の単位数を獲得する多次元配列
-    @var    array*/
+    /**
+     * 調整した単位一覧を獲得するメソッド
+     * @param int $job
+     * @param string $working_date
+     * @return array 単位調整を行った全ての患者の単位数を獲得する多次元配列
+     */
     public function getUnitUpdated(
         $job,
         $working_date
@@ -468,11 +464,11 @@ class CountUnit
         $result = $stmt->fetchALL(PDO::FETCH_ASSOC);
         return $result;
     }
-    /* 職種ごとにスタッフの情報を取得する
-    count/edit, patient/add_detail, patient/edit_detail, person/select_staff  
-    @param  $job int
-    @return $result 職種ごとのすべてのスタッフの情報が入った多次元配列
-    @var    array */
+    /**
+     * 職種ごとにスタッフの情報を取得する
+     * @param int $job
+     * @return array 職種ごとのすべてのスタッフの情報が入った多次元配列
+     */
     public function getStaffByJob($job)
     {
         $sql = '';
@@ -493,12 +489,12 @@ class CountUnit
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
-    /*　勤務しているスタッフの情報を取得
-    count/index.php
-    @param  $job int
-            $working_date date
-    @return $result　出勤しているスタッフの情報が入った多次元配列(職種の指定要)
-    @var    array */
+    /**
+     * 勤務しているスタッフの情報を取得
+     * @param int $job
+     * @param string $working_date
+     * @return array 出勤しているスタッフの情報が入った多次元配列(職種の指定要)
+     */
     public function getWorkingStaffByJob(
         $job,
         $working_date

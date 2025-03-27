@@ -126,7 +126,6 @@ try {
     } else {
         //パスワードをハッシュ化する
         $pass = password_hash($pass, PASSWORD_DEFAULT);
-
         //新規スタッフを追加するメソッド
         $add_staff = new Staffs($pdo);
         $result = $add_staff->addStaff(
@@ -140,7 +139,6 @@ try {
             $mail,
             $pass
         );
-
         if ($result) {
             //正常終了した場合はメッセージを削除
             unset($_SESSION['err']['msg']);

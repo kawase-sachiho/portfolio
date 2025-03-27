@@ -18,8 +18,6 @@ unset($_SESSION['patient']['patient_id']);
 try{
 $pdo = Base::getInstance();
 $token = Safety::generateToken();
-
-//本日の日付を取得し$dayに入れる
 $day = Date::getDate();
 
 //日付が選択されていないかつ、セッションにデータが保存されていない場合
@@ -62,7 +60,6 @@ catch (Exception $e)
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -15,8 +15,6 @@ if (empty($_SESSION['user'])) {
 try {
     $pdo = Base::getInstance();
     $token = Safety::generateToken();
-
-    //本日の日付を取得し$dayに入れる
     $day = Date::getDate();
 
     //前のページからPOSTされた値、あるいはセッションに保存された日付・単位の過不足を代入

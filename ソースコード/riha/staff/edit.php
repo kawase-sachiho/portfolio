@@ -6,11 +6,11 @@
     require_once('../class/db/Base.php');
     require_once('../class/Staffs.php');
 
+    //ログイン状態のチェック
     if (empty($_SESSION['user'])) {
         header('Location:../login/index.php');
         exit;
     }
-
     try{
     //データベースへ接続する
     $pdo = Base::getInstance();
