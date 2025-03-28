@@ -2,6 +2,9 @@
 
 リハビリスタッフの担当患者・単位数を調整するアプリケーション。
 
+リハビリの単位調整については、下記の資料をご覧ください。
+<a href="https://github.com/kawase-sachiho/portfolio/blob/main/%E8%A8%AD%E8%A8%88%E6%9B%B8/%E3%83%AA%E3%83%8F%E3%83%93%E3%83%AA%E5%8D%98%E4%BD%8D%E8%AA%BF%E6%95%B4%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AE%E8%AA%AC%E6%98%8E.pdf">リハビリの単位調整について</a>
+
 ![トップ画面](images/top.png)
 TOP画面。【単位調整の手順を確認する】をクリックするとスライドする形で手順が表示される。
 
