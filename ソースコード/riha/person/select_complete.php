@@ -104,6 +104,8 @@ try {
         header('Location:./select_patient.php');
         return;
     } else {
+        unset($_SESSION['select']['staff_name']);
+        unset($_SESSION['select']['patient_name']);
         $_SESSION['select']['msg'] = "正常に完了しました。";
         $_SESSION['select']['reservation_date'] = $_POST['reservation_date'];
         $_SESSION['select']['job'] = $_POST['job'];

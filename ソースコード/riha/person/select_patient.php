@@ -59,7 +59,6 @@ if ($working_staffs['count'] == 0) {
 //出勤者がいる場合は、患者の情報を呼び出す
 $patients = new CountUnit($pdo);
 $patient_lists = $patients->getPatientsByRihaDate($reservation_date);
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -74,7 +73,6 @@ $patient_lists = $patients->getPatientsByRihaDate($reservation_date);
 </head>
 
 <body>
-
     <div class="container">
         <div class="mt-5 text-right">
             <a class="btn-warning btn-lg" style="text-decoration:none;" href="../">TOPへ戻る</a>
@@ -126,6 +124,7 @@ $patient_lists = $patients->getPatientsByRihaDate($reservation_date);
                         <form method="post" action="./select_delete.php">
                             <input type="hidden" name="token" value="<?= $token ?>">
                             <input type="hidden" name="reservation_date" value="<?= $reservation_date ?>">
+                            
                             <input type="hidden" name="job" value="<?= $job ?>">
                             <tbody>
                                 <tr class="table-primary">
@@ -168,7 +167,6 @@ $patient_lists = $patients->getPatientsByRihaDate($reservation_date);
                                         </td>
                                         <td class="col-1" style="border:none;">
                                             <button type="submit" class="btn btn-danger">取消</button>
-
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
